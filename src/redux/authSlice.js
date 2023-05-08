@@ -35,12 +35,45 @@ export const signinUser = createAsyncThunk('userSignin', async (body) => {
 const authSlice = createSlice({
     name: 'user',
     initialState: initialState,
-    reducers: {},
+    reducers: {
+        getToken: (state, action) => {
+            state.token = localStorage.getItem('token')
+        },
+        getUser: (state, action) => {
+            state.user = localStorage.getItem('user')
+        },
+        logout: (state, action) => {
+            state.token = null
+            localStorage.clear()
+        },
+    },
     extraReducers: {
+        //REGISTRATION
         [signupUser.pending]: (state, action) => {
             state.loading = true
         },
-        [signupUser.fulfilled]: (state, {payload: {error, message}}) => {
+        [signupUser.fulfilled]: (state, {payload: {error, message, token, user}}) => {
+            state.loading = false
+            if(error) {
+                state.error = error
+            } else {
+                state.message = message
+                state.token = token
+                state.user = user
+
+                localStorage.setItem('token', token)
+                localStorage.setItem('user', JSON.stringify(user))
+            }
+        },
+        [signupUser.rejected]: (state, action) => {
+            state.loading = true
+        },
+        //////////////////////////////////////////////////////////////////////////
+        //LOGIN
+        [signinUser.pending]: (state, action) => {
+            state.loading = true
+        },
+        [signinUser.fulfilled]: (state, {payload: {error, message}}) => {
             state.loading = false
             if(error) {
                 state.error = error
@@ -48,10 +81,12 @@ const authSlice = createSlice({
                 state.message = message
             }
         },
-        [signupUser.rejected]: (state, action) => {
+        [signinUser.rejected]: (state, action) => {
             state.loading = true
         },
     }
 })
+
+export const { getToken, getUser, logout } = authSlice.actions
 
 export default authSlice.reducer
