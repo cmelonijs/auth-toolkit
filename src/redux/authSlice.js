@@ -17,7 +17,18 @@ export const signupUser = createAsyncThunk('userSignUp', async (body) => {
         },
         body: JSON.stringify(body)
     })
+    return await res.json()
+}) 
 
+export const signinUser = createAsyncThunk('userSignin', async (body) => {
+    const res = await fetch('https://www.autenticazione.com/login', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(body)
+    })
     return await res.json()
 }) 
 
