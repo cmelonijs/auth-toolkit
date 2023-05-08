@@ -1,5 +1,6 @@
 import {useState} from 'react';
 import { useDispatch } from 'react-redux';
+import { signinUser } from './redux/authSlice';
 
 const Login = () => {
     const [values, setValues] = useState({
@@ -15,6 +16,7 @@ const Login = () => {
 
     const handleSubmit = (e) => {
         e.preventDefault()
+        dispatch({email, password})
     }
 
     return (
