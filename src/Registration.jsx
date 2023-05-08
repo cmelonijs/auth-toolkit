@@ -1,4 +1,6 @@
 import {useState} from 'react';
+import { useDispatch } from 'react-redux';
+import { signupUser } from './redux/authSlice';
 
 const Registration = () => {
     const [values, setValues] = useState({
@@ -11,9 +13,12 @@ const Registration = () => {
 
     const {name, email, password, error, success} = values
 
+    const dispatch = useDispatch()
+
     const handleSubmit = (e) => {
         e.preventDefault()
-        console.log('vallues', values)
+        console.log('values', values)
+        dispatch(signupUser({name, email, password}))
     }
 
     return (
